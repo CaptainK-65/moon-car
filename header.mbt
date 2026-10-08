@@ -99,16 +99,17 @@ fn decode_header(bytes : Bytes, limits : Limits) -> Header raise CarError {
 ///|
 fn encode_header(header : Header, limits : Limits) -> Bytes raise CarError {
   budget("roots", header.roots.length(), limits.max_roots)
-  let mut size = 18 // map, keys, version and shortest array marker
+  let mut size = 16 + @cbor.encode(@cbor.Unsigned(header.roots.length().to_uint64())).length()
   let links = []
   for root in header.roots {
     let bytes = root.to_bytes()
     ignore(checked_cid(bytes, limits))
-    // Account for maximum CBOR overhead before building a potentially large value.
-    if bytes.length() > limits.max_header - size - 12 {
-      raise LimitExceeded("header", limits.max_header.to_uint64(), (size.to_uint64() + bytes.length().to_uint64() + 12UL))
+    let overhead = 3 + @cbor.encode(@cbor.Unsigned(bytes.length().to_uint64() + 1UL)).length()
+    // Exact schema size before constructing a potentially large value.
+    if bytes.length() > limits.max_header - size - overhead {
+      raise LimitExceeded("header", limits.max_header.to_uint64(), (size.to_uint64() + bytes.length().to_uint64() + overhead.to_uint64()))
     }
-    size += bytes.length() + 12
+    size += bytes.length() + overhead
     links.push(@cbor.Tag(42UL, @cbor.Bytes(b"\x00" + bytes)))
   }
   let bytes = @cbor.encode(@cbor.Map([
@@ -121,7 +122,7 @@ fn encode_header(header : Header, limits : Limits) -> Bytes raise CarError {
 
 ///|
 /// Encode a canonical CARv1 header including its unsigned-varint length prefix.
-pub fn Header::encode(self : Header, limits? : Limits = Limits::new()) -> Bytes raise CarError {
+pub fn Header::encode(self : Header, limits? : Limits = Limits::default()) -> Bytes raise CarError {
   let bytes = encode_header(self, limits)
   @cid.encode_u64(bytes.length().to_uint64()) + bytes
 }

@@ -23,7 +23,7 @@ pub struct Decoder {
 }
 
 ///|
-pub fn Decoder::new(limits? : Limits = Limits::new()) -> Decoder raise CarError {
+pub fn Decoder::new(limits? : Limits = Limits::default()) -> Decoder {
   {
     limits, prefix: @buffer.Buffer(), body: @buffer.Buffer(), stage: Prefix,
     header_seen: false, position: 0, section_start: 0, body_start: 0,

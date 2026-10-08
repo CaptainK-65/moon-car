@@ -22,7 +22,7 @@ pub struct Archive {
 }
 
 ///|
-pub fn Archive::decode(bytes : Bytes, limits? : Limits = Limits::new()) -> Archive raise CarError {
+pub fn Archive::decode(bytes : Bytes, limits? : Limits = Limits::default()) -> Archive raise CarError {
   budget("archive", bytes.length(), limits.max_archive)
   let decoder = Decoder::new(limits~)
   let entries = []

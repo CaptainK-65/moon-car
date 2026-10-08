@@ -3,7 +3,7 @@
 pub fn Block::verify(
   self : Block,
   provider? : @cid.HashProvider = @cid.builtin_hash_provider(),
-  limits? : Limits = Limits::new(),
+  limits? : Limits = Limits::default(),
 ) -> Unit raise CarError {
   budget("block", self.data.length(), limits.max_block)
   match self.cid.verify(self.data, provider, cid_limits(limits)) {

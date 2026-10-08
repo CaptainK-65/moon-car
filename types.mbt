@@ -40,6 +40,12 @@ pub fn Limits::new(
 }
 
 ///|
+pub fn Limits::default() -> Limits {
+  { max_header: 1024 * 1024, max_block: 16 * 1024 * 1024,
+    max_roots: 1024, max_blocks: 1000000, max_archive: 256 * 1024 * 1024 }
+}
+
+///|
 pub struct Header {
   roots : Array[@cid.Cid]
 }
@@ -91,7 +97,7 @@ pub(all) enum Event {
 
 ///|
 fn cid_limits(limits : Limits) -> @cid.Limits {
-  @cid.Limits::new(max_input_bytes=limits.max_block, max_digest_bytes=1024)
+  @cid.Limits::new(max_input_bytes=limits.max_block.max(2048), max_digest_bytes=1024)
 }
 
 ///|

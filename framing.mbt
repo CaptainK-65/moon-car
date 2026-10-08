@@ -47,7 +47,7 @@ fn decode_block(bytes : Bytes, limits : Limits) -> (Block, Int) raise CarError {
 
 ///|
 /// Encode a single CAR block section; this does not assert hash validity.
-pub fn Block::encode(self : Block, limits? : Limits = Limits::new()) -> Bytes raise CarError {
+pub fn Block::encode(self : Block, limits? : Limits = Limits::default()) -> Bytes raise CarError {
   let cid = self.cid.to_bytes()
   ignore(checked_cid(cid, limits))
   if self.data.length() > limits.max_block - cid.length() {

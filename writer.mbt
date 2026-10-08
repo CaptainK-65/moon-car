@@ -10,7 +10,7 @@ pub struct Writer {
 }
 
 ///|
-pub fn Writer::new(header : Header, limits? : Limits = Limits::new()) -> Writer raise CarError {
+pub fn Writer::new(header : Header, limits? : Limits = Limits::default()) -> Writer {
   { limits, header, position: 0, count: 0, started: false }
 }
 
@@ -51,7 +51,7 @@ pub fn Writer::position(self : Writer) -> Int { self.position }
 
 ///|
 /// Write blocks in caller order. Equal roots and block order yield equal bytes.
-pub fn encode(header : Header, blocks : Array[Block], limits? : Limits = Limits::new()) -> Bytes raise CarError {
+pub fn encode(header : Header, blocks : Array[Block], limits? : Limits = Limits::default()) -> Bytes raise CarError {
   let writer = Writer::new(header, limits~)
   let buffer = @buffer.Buffer()
   buffer.write_bytes(writer.start())
