@@ -4,7 +4,7 @@ Pure MoonBit CARv1 archive streaming, block integrity verification and offset in
 
 Under active development for the October 2026 MoonBit ecosystem competition.
 The archive layer is original implementation; CID, multihash and hashing are
-provided by MoonLoom, and CBOR values by mizchi/cbor.
+provided by MoonLoom, and CBOR values by 2515050242/cbor.
 
 ## Development
 

@@ -2,4 +2,5 @@ import {
   "ggbond44439/moonloom" @cid,
   "2515050242/cbor" @cbor,
   "moonbitlang/core/buffer",
+  "moonbitlang/core/debug",
 }
