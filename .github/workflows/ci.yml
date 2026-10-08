@@ -46,4 +46,11 @@ jobs:
       - run: moon run tools/embed_fixture.mbtx
       - run: moon fmt
       - run: git diff --exit-code -- fixture_bytes_test.mbt
-      - run: moon run tools/verify_published.mbtx --target native
+      - name: Published package consumer (wasm)
+        run: moon run tools/verify_published.mbtx --target wasm
+      - name: Published package consumer (wasm-gc)
+        run: moon run tools/verify_published.mbtx --target wasm-gc
+      - name: Published package consumer (JS)
+        run: moon run tools/verify_published.mbtx --target js
+      - name: Published package consumer (native)
+        run: moon run tools/verify_published.mbtx --target native

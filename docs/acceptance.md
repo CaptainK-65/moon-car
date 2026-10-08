@@ -22,6 +22,12 @@ The existing global toolchain was preserved.
   extracted payload SHA-256 matched the input.
 - MoonCAR read and verified an `ipfs-car@3.1.0` archive, rewrote identical bytes;
   the reference CLI unpacked the rewritten archive with identical payload.
+- `tools/verify_fixture.mbtx` checks the independent fixture's pinned SHA-256
+  and length, and rejects one-bit-modified and truncated copies.
+- `tools/verify_published.mbtx` passed on wasm, wasm-gc, JS and native. It imports
+  `CaptainK-65/moon-car@0.1.0` from the registry, separately from the source-module
+  tests, and verifies archive roundtrip, bytewise streaming and CID lookup. CI
+  includes a separate consumer step for each backend.
 
 ## Reproduce interoperability
 

@@ -1,5 +1,10 @@
 # MoonCAR
 
+[![CI](https://github.com/CaptainK-65/moon-car/actions/workflows/ci.yml/badge.svg)](https://github.com/CaptainK-65/moon-car/actions/workflows/ci.yml)
+· [Release v0.1.0](https://github.com/CaptainK-65/moon-car/releases/tag/v0.1.0)
+· [mooncakes package](https://mooncakes.io/docs/CaptainK-65/moon-car@0.1.0)
+· [Apache-2.0](LICENSE)
+
 ![MoonCAR architecture: blocks are written to CARv1 archives and incrementally decoded for full-CID indexing and hash verification.](docs/assets/mooncar-overview.svg)
 
 *Write blocks → exchange a CARv1 archive → consume, index and verify blocks.*
