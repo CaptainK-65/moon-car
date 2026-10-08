@@ -1,0 +1,25 @@
+import {
+  "CaptainK-65/moon-car@0.1.0" @car,
+  "ggbond44439/moonloom@0.1.6" @cid,
+}
+
+///|
+fn main raise {
+  let data = b"published package consumer"
+  let cid = @cid.cid_from_content(@cid.RAW_CODEC, @cid.Sha2_256, data,
+    @cid.sha2_provider(), @cid.Limits::default()).unwrap()
+  let bytes = @car.encode(@car.Header::new([cid]), [@car.Block::new(cid, data)])
+  let archive = @car.Archive::decode(bytes)
+  archive.verify(require_roots=true)
+  assert_eq(archive.get(cid).data(), data)
+  let decoder = @car.Decoder::new()
+  let mut blocks = 0
+  for i in 0..<bytes.length() {
+    for event in decoder.feed(bytes[i:i + 1]) {
+      if event is @car.Block(block, _) { block.verify(); blocks += 1 }
+    }
+  }
+  decoder.finish()
+  assert_eq(blocks, 1)
+  println("published CaptainK-65/moon-car@0.1.0: roundtrip, streaming and lookup verified")
+}

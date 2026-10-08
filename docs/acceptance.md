@@ -53,12 +53,26 @@ Independent fixture source/license/checksum: [fixtures/README.md](../fixtures/RE
 Generate its portable test literal with `moon run tools/embed_fixture.mbtx`, then
 `moon fmt`; there should be no fixture test diff.
 
-## Remaining external gates
+## Release and consumer verification
 
-Public GitHub CI, mooncakes publication/clean consumer install, competition enrollment
-and final acceptance must have actual evidence recorded before being marked complete.
-No performance or peak-memory claims have been made. CARv2 is not promised in v0.1.
+- Release implementation commit: `a3f201ce7ecb74729ec2a3e53f0c8f0bd27153e2`.
+- All four public CI jobs passed:
+  https://github.com/CaptainK-65/moon-car/actions/runs/37731554399 .
+- GitHub release: https://github.com/CaptainK-65/moon-car/releases/tag/v0.1.0 .
+- `moon publish`: server returned `200 OK` on 2026-10-08.
+- Public package: https://mooncakes.io/docs/CaptainK-65/moon-car@0.1.0 .
+- Package archive SHA-256:
+  `a52d529596043e8f5ecf374860b98b3e293ff9640ed4d3c915bb63fbdcf2be09`.
+- A separate consumer module with no local path override downloaded this package
+  from the registry. Check and end-to-end tests passed on all four backends.
+  Reproduce with `moon run tools/verify_published.mbtx --target native`.
+- Initial timings using the published package: [performance.md](performance.md).
+
+## Remaining competition gates
+
+Competition enrollment and final organizer acceptance are not completed.
 The charter requires the participant to write the one-page proposal manually.
+Peak process memory has not been measured. CARv2 is not promised in v0.1.
 
 Initial public CI: Linux, macOS and Windows validation all passed at
 https://github.com/CaptainK-65/moon-car/actions/runs/37731131481 . The separate

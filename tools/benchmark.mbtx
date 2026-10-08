@@ -1,0 +1,66 @@
+import {
+  "CaptainK-65/moon-car@0.1.0" @car,
+  "ggbond44439/moonloom@0.1.6" @cid,
+  "moonbitlang/core/env",
+}
+
+///|
+fn make_block(size : Int, seed : Int) -> @car.Block {
+  let data = Bytes::makei(size, i => (if i < 4 { (seed >> (i * 8)) & 255 } else { (i * 73 + seed) & 255 }).to_byte())
+  let cid = @cid.cid_from_content(@cid.RAW_CODEC, @cid.Sha2_256, data,
+    @cid.sha2_provider(), @cid.Limits::default()).unwrap()
+  @car.Block::new(cid, data)
+}
+
+///|
+fn median_ms(action : () -> Unit raise @car.CarError) -> UInt64 raise @car.CarError {
+  action() // warmup
+  let samples = []
+  for _ in 0..<5 {
+    let start = @env.now()
+    action()
+    let end = @env.now()
+    samples.push(if end >= start { end - start } else { 0UL })
+  }
+  samples.sort()
+  samples[2]
+}
+
+///|
+fn main raise {
+  for (name, count, size) in [("small", 4096, 128), ("large", 2, 4 * 1024 * 1024)] {
+    let blocks = Array::makei(count, i => make_block(size, i))
+    let header = @car.Header::new([blocks[0].cid()])
+    let bytes = @car.encode(header, blocks)
+    let encode_ms = median_ms(() => {
+      for _ in 0..<8 { ignore(@car.encode(header, blocks)) }
+    })
+    let scan_ms = median_ms(() => {
+      for _ in 0..<8 { ignore(@car.Archive::decode(bytes)) }
+    })
+    let stream_ms = median_ms(() => {
+      for _ in 0..<8 {
+        let decoder = @car.Decoder::new()
+        let mut pos = 0
+        while pos < bytes.length() {
+          let end = pos + (bytes.length() - pos).min(4096)
+          ignore(decoder.feed(bytes[pos:end]))
+          pos = end
+        }
+        decoder.finish()
+      }
+    })
+    println("\{name}: archive_bytes=\{bytes.length()} rounds=8 encode_ms=\{encode_ms} index_ms=\{scan_ms} stream_ms=\{stream_ms}")
+    let archive = @car.Archive::decode(bytes)
+    let targets = blocks.map(b => b.cid())
+    let mut checksum = 0
+    let lookup_count = if name == "small" { 10000 } else { 20 }
+    let lookup_ms = median_ms(() => {
+      for i in 0..<lookup_count {
+        let block = archive.get(targets[(i * 73) % count])
+        checksum += block.data().length()
+      }
+    })
+    println("\{name}: lookups=\{lookup_count} median_ms=\{lookup_ms} checksum=\{checksum}")
+  }
+}

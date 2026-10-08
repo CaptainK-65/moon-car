@@ -105,5 +105,9 @@ all split positions, malformed headers, overflow, budget boundaries, duplicate
 corruption and binary payload/chunk matrices. See [acceptance](docs/acceptance.md)
 and [design](docs/design.md).
 
+Published package: [CaptainK-65/moon-car@0.1.0](https://mooncakes.io/docs/CaptainK-65/moon-car@0.1.0).
+Verify it independently with `moon run tools/verify_published.mbtx --target native`.
+Initial reproducible timings: [performance record](docs/performance.md).
+
 Version 0.1 excludes CARv2, persistent storage/indexes, UnixFS and DAG closure traversal.
 The October competition proposal must be written by the participant.
