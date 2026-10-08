@@ -1,0 +1,25 @@
+name: Feature request
+description: Propose a concrete reusable archive-layer improvement.
+title: "[Feature]: "
+body:
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Use case and current limitation
+      description: Describe the input, processing and output needed by another MoonBit project.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior and acceptance criteria
+      description: Include backend expectations, resource limits and how the result can be verified.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Standards, existing libraries and alternatives
+      description: Link relevant specifications and explain why this belongs to the CAR archive layer.
+    validations:
+      required: true

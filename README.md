@@ -115,3 +115,10 @@ Initial reproducible timings: [performance record](docs/performance.md).
 
 Version 0.1 excludes CARv2, persistent storage/indexes, UnixFS and DAG closure traversal.
 The October competition proposal must be written by the participant.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for reproduction requirements, local checks
+and source provenance. Track bugs and concrete improvements through
+[Issues](https://github.com/CaptainK-65/moon-car/issues); completed records link to
+their implementing commits and Actions evidence.

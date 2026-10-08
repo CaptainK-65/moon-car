@@ -1,0 +1,42 @@
+name: Bug report
+description: Report a reproducible parsing, verification, indexing or CLI failure.
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: Search existing issues first. Keep fixtures public and minimal, and include their provenance.
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Package version, output of moon version --all, operating system and backend.
+      placeholder: "moon-car 0.1.0; moonc ...; Windows/Linux/macOS; wasm/wasm-gc/js/native"
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected behavior
+      options:
+        - CAR structure or streaming
+        - Hash verification
+        - Root presence policy
+        - CID index or duplicate handling
+        - Native file CLI
+        - Documentation or CI
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Provide commands or MoonBit code and a fixture URL/byte sequence with source and checksum.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected and actual behavior
+      description: Include the exact error or failing assertion; distinguish parsing from integrity and root presence.
+    validations:
+      required: true
