@@ -108,6 +108,33 @@ test "block verification rejects mismatches and unsupported hash algorithms" {
 }
 
 ///|
+test "standalone verification checks CID structure and counts CID in block budget" {
+  let block = sample_block(b"x")
+  let limited = try {
+    block.verify(limits=@moon_car.Limits::new(max_block=36))
+    false
+  } catch {
+    @moon_car.LimitExceeded("block", _, _) => true
+    _ => false
+  }
+  assert_true(limited)
+  let invalid_cid = @cid.Cid::{
+    version: 2UL,
+    codec: @cid.RAW_CODEC,
+    hash: block.cid().hash,
+  }
+  let invalid = @moon_car.Block::new(invalid_cid, b"x")
+  let rejected = try {
+    invalid.verify()
+    false
+  } catch {
+    @moon_car.InvalidCid(_) => true
+    _ => false
+  }
+  assert_true(rejected)
+}
+
+///|
 test "header profiles reject trailing, indefinite and reserved CBOR" {
   for
     body in [

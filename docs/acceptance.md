@@ -11,7 +11,7 @@ The existing global toolchain was preserved.
 - `moon check --target all --deny-warn`: passed, zero MoonBit warnings/errors.
 - `moon build --target all`: passed (Windows async dependency emits one upstream
   C macro redefinition warning; core has no C/JS FFI).
-- `moon test --target all`: 35 tests passed on each of wasm, wasm-gc, JS and native.
+- `moon test --target all`: 36 tests passed on each of wasm, wasm-gc, JS and native.
   Generated tests include 50 binary size/chunk combinations and every two-part split
   position for a sample archive; test-function counts do not count each combination.
 - Three executable examples ran successfully.
