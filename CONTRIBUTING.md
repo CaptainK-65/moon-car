@@ -35,7 +35,9 @@ native CLI. Explain changes to the documented CARv1 profile rather than implying
 support for CARv2, UnixFS or transitive graph closure.
 
 Keep the independent fixture unmodified unless its source/version is intentionally
-changed with a reviewed checksum and license notice. Regenerate its test literal
+changed with a reviewed checksum and license notice. First run
+`moon run tools/verify_fixture.mbtx --target native` to check provenance and
+exercise rejection of modified copies. Regenerate its test literal
 with `moon run tools/embed_fixture.mbtx`, then run `moon fmt` and inspect the diff.
 Agent-authored automation belongs in `.mbtx` files; see [AGENTS.md](AGENTS.md).
 

@@ -42,6 +42,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: moon update
+      - run: moon run tools/verify_fixture.mbtx --target native
       - run: moon run tools/embed_fixture.mbtx
       - run: moon fmt
       - run: git diff --exit-code -- fixture_bytes_test.mbt

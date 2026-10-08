@@ -1,0 +1,58 @@
+///|
+import {
+  "moonbitlang/async@0.22.4",
+  "moonbitlang/async@0.22.4/fs",
+  "moonbitlang/async@0.22.4/io",
+  "ggbond44439/moonloom@0.1.6" @cid,
+}
+
+///|
+fn verify_fixture(bytes : Bytes) -> Unit raise {
+  if bytes.length() != 715 {
+    fail("IPLD fixture must contain exactly 715 bytes")
+  }
+  let hashed = @cid.cid_from_content(
+    @cid.RAW_CODEC,
+    @cid.Sha2_256,
+    bytes,
+    @cid.sha2_provider(),
+    @cid.Limits::default(),
+  ).unwrap()
+  let expected = b"\x54\x3f\xf9\xc4\x5b\xbc\xb5\xc4\x39\xe8\xf8\x68\x31\x15\xcf\x97\xfc\x5d\xe6\xbb\x14\x17\x5a\x74\x90\x55\x30\x44\x27\xc3\x3c\x2e"
+  if hashed.hash.digest != expected {
+    fail("IPLD fixture SHA-256 differs from the documented upstream fixture")
+  }
+}
+
+///|
+async fn main {
+  let original = @fs.read_file("fixtures/carv1-basic.car").binary()
+  verify_fixture(original)
+  // A same-length, one-bit modification must fail the digest check.
+  // Work on a copy: never modify the independently sourced archive.
+  let modified = Bytes::makei(original.length(), i => {
+    if i == 0 {
+      (original[i].to_int() ^ 1).to_byte()
+    } else {
+      original[i]
+    }
+  })
+  let digest_rejected = try {
+    verify_fixture(modified)
+    false
+  } catch {
+    _ => true
+  }
+  assert_true(digest_rejected)
+  let truncated = Bytes::makei(original.length() - 1, i => original[i])
+  let length_rejected = try {
+    verify_fixture(truncated)
+    false
+  } catch {
+    _ => true
+  }
+  assert_true(length_rejected)
+  println(
+    "IPLD fixture: 715 bytes and upstream SHA-256 verified; modified and truncated copies rejected",
+  )
+}
