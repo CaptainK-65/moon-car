@@ -11,7 +11,7 @@ The existing global toolchain was preserved.
 - `moon check --target all --deny-warn`: passed, zero MoonBit warnings/errors.
 - `moon build --target all`: passed (Windows async dependency emits one upstream
   C macro redefinition warning; core has no C/JS FFI).
-- `moon test --target all`: 29 tests passed on each of wasm, wasm-gc, JS and native.
+- `moon test --target all`: 35 tests passed on each of wasm, wasm-gc, JS and native.
   Generated tests include 50 binary size/chunk combinations and every two-part split
   position for a sample archive; test-function counts do not count each combination.
 - Three executable examples ran successfully.
@@ -59,3 +59,7 @@ Public GitHub CI, mooncakes publication/clean consumer install, competition enro
 and final acceptance must have actual evidence recorded before being marked complete.
 No performance or peak-memory claims have been made. CARv2 is not promised in v0.1.
 The charter requires the participant to write the one-page proposal manually.
+
+Initial public CI: Linux, macOS and Windows validation all passed at
+https://github.com/CaptainK-65/moon-car/actions/runs/37731131481 . The separate
+fixture job exposed a missing registry-update step; it was fixed before release.
