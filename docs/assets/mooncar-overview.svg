@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="660" viewBox="0 0 1440 660" role="img" aria-labelledby="title desc">
+  <title id="title">MoonCAR: content-addressed archives for MoonBit</title>
+  <desc id="desc">Blocks pass through the writer into a CARv1 archive with a roots and version header and length-prefixed CID and data sections. The incremental decoder emits blocks for exact CID indexing and optional hash verification. Three use cases are distribution, streaming snapshots and object lookup.</desc>
+  <defs>
+    <linearGradient id="background" x2="1" y2="1"><stop stop-color="#0e2437"/><stop offset="1" stop-color="#07111e"/></linearGradient>
+    <linearGradient id="accent"><stop stop-color="#63efce"/><stop offset="1" stop-color="#80c5ff"/></linearGradient>
+    <linearGradient id="panel" x2="0" y2="1"><stop stop-color="#173447"/><stop offset="1" stop-color="#102534"/></linearGradient>
+    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse"><path d="M36 0H0V36" fill="none" stroke="#8ab8d2" stroke-opacity=".04"/></pattern>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0L7 4L0 8" fill="none" stroke="#63efce" stroke-width="1.5"/></marker>
+  </defs>
+  <rect width="1440" height="660" rx="24" fill="url(#background)"/>
+  <rect width="1440" height="660" rx="24" fill="url(#grid)"/>
+  <rect x="20" y="20" width="1400" height="620" rx="16" fill="none" stroke="#36546a" stroke-opacity=".6"/>
+  <g font-family="Segoe UI, Arial, sans-serif">
+    <g transform="translate(76 73)">
+      <path d="M53 3A38 38 0 1 0 66 70A34 34 0 0 1 53 3Z" fill="url(#accent)"/>
+      <rect x="40" y="25" width="23" height="17" rx="4" fill="#102534" stroke="#63efce" stroke-width="2"/>
+      <rect x="50" y="48" width="23" height="17" rx="4" fill="#102534" stroke="#80c5ff" stroke-width="2"/>
+    </g>
+    <text x="176" y="134" fill="#edf8ff" font-size="64" font-weight="700" letter-spacing="-2">MoonCAR</text>
+    <text x="76" y="184" fill="#a9c4d6" font-size="25">Content-addressed archives, built for MoonBit.</text>
+    <rect x="1105" y="82" width="258" height="46" rx="23" fill="#102f38" stroke="#2c776f"/>
+    <circle cx="1135" cy="105" r="5" fill="#63efce"/>
+    <text x="1154" y="113" fill="#c6f7e9" font-size="20" font-weight="600">PURE MOONBIT · CARv1</text>
+
+    <rect x="76" y="242" width="304" height="270" rx="18" fill="url(#panel)" stroke="#38596d"/>
+    <text x="100" y="283" fill="#ecf6fc" font-size="25" font-weight="600">Block writer</text>
+    <text x="100" y="313" fill="#8eafc3" font-size="17">Emit one section at a time</text>
+    <g fill="#0b1e2c" stroke="#38596d">
+      <rect x="100" y="334" width="254" height="42" rx="8"/>
+      <rect x="100" y="390" width="254" height="42" rx="8"/>
+      <rect x="100" y="446" width="254" height="42" rx="8"/>
+    </g>
+    <g fill="#79e5ca" font-size="18" font-family="Consolas, monospace">
+      <text x="115" y="362">CID 01</text><text x="115" y="418">CID 02</text><text x="115" y="474">CID 03</text>
+    </g>
+    <g fill="#4f879e"><rect x="206" y="348" width="129" height="13" rx="4"/><rect x="206" y="404" width="86" height="13" rx="4"/><rect x="206" y="460" width="107" height="13" rx="4"/></g>
+    <path d="M392 375H432" stroke="#63efce" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="448" y="242" width="500" height="270" rx="18" fill="#102a39" stroke="#63efce" stroke-opacity=".6"/>
+    <text x="476" y="283" fill="#edf8ff" font-size="25" font-weight="600">CARv1 archive</text>
+    <text x="476" y="313" fill="#8eafc3" font-size="17">Portable, length-prefixed binary format</text>
+    <rect x="476" y="338" width="444" height="48" rx="8" fill="#1b4152"/>
+    <text x="494" y="369" fill="#b3e1f2" font-size="20" font-family="Consolas, monospace">header  { roots, version: 1 }</text>
+    <g fill="#0b1e2c" stroke="#31576a"><rect x="476" y="401" width="444" height="48" rx="8"/></g>
+    <path d="M607 402V448M710 402V448" stroke="#31576a"/>
+    <text x="494" y="432" fill="#a9c4d6" font-size="19" font-family="Consolas, monospace">length</text>
+    <text x="638" y="432" fill="#79e5ca" font-size="19" font-family="Consolas, monospace">CID</text>
+    <text x="785" y="432" fill="#80c5ff" font-size="19" font-family="Consolas, monospace">data</text>
+    <text x="476" y="483" fill="#8eafc3" font-size="17">Ordered sections · duplicates preserved</text>
+    <path d="M960 375H1000" stroke="#63efce" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="1016" y="242" width="348" height="270" rx="18" fill="url(#panel)" stroke="#38596d"/>
+    <text x="1040" y="283" fill="#ecf6fc" font-size="25" font-weight="600">Incremental decoder</text>
+    <text x="1040" y="313" fill="#8eafc3" font-size="17">Bounded input → block events</text>
+    <rect x="1040" y="342" width="300" height="61" rx="10" fill="#123c42"/>
+    <circle cx="1068" cy="369" r="9" fill="none" stroke="#63efce" stroke-width="2"/><path d="M1075 376L1083 384" stroke="#63efce" stroke-width="2"/>
+    <text x="1100" y="379" fill="#c6f7e9" font-size="22" font-weight="600">Full-CID index</text>
+    <rect x="1040" y="420" width="300" height="61" rx="10" fill="#19374b"/>
+    <path d="M1056 438L1068 432L1080 438V450Q1080 461 1068 466Q1056 461 1056 450Z" fill="none" stroke="#80c5ff" stroke-width="2"/><path d="M1061 449L1066 454L1075 442" fill="none" stroke="#80c5ff" stroke-width="2"/>
+    <text x="1100" y="457" fill="#d1eaff" font-size="22" font-weight="600">Verify block hashes</text>
+
+    <path d="M76 549H1364" stroke="#36546a"/>
+    <g fill="#63efce"><circle cx="84" cy="582" r="4"/><circle cx="498" cy="582" r="4"/><circle cx="946" cy="582" r="4"/></g>
+    <g fill="#d2e3ee" font-size="22" font-weight="600"><text x="102" y="590">Distribution packages</text><text x="516" y="590">Streaming snapshots</text><text x="964" y="590">Object lookup by CID</text></g>
+    <text x="76" y="624" fill="#8eafc3" font-size="16">wasm · wasm-gc · JavaScript · native</text>
+    <text x="1364" y="624" text-anchor="end" fill="#8eafc3" font-size="16">Structure, integrity and root presence are separate checks.</text>
+  </g>
+</svg>

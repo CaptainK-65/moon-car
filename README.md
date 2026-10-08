@@ -1,5 +1,9 @@
 # MoonCAR
 
+![MoonCAR architecture: blocks are written to CARv1 archives and incrementally decoded for full-CID indexing and hash verification.](docs/assets/mooncar-overview.svg)
+
+*Write blocks → exchange a CARv1 archive → consume, index and verify blocks.*
+
 Pure MoonBit **CARv1 archive** reading, writing, streaming, integrity verification
 and exact CID offset indexing. Reusable data-exchange infrastructure for the
 MoonBit ecosystem. Apache-2.0 licensed.
