@@ -15,7 +15,7 @@ test "limits reject invalid budgets" {
   let rejected = try {
     ignore(@moon_car.Limits::new(max_block=0))
     false
-  } catch { @moon_car.InvalidState(_) => true }
+  } catch { @moon_car.InvalidState(_) => true; _ => false }
   assert_true(rejected)
   ignore(@moon_car.Limits::new(max_roots=0, max_blocks=0))
 }

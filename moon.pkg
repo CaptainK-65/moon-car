@@ -4,3 +4,6 @@ import {
   "moonbitlang/core/buffer",
   "moonbitlang/core/debug",
 }
+import {
+  "CaptainK-65/moon-car" @moon_car,
+} for "test"
