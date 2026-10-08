@@ -1,5 +1,6 @@
-/_build/
+_build/
 /target/
 /.mooncakes/
 /.moon/
 *.car
+!/fixtures/*.car

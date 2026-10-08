@@ -1,0 +1,128 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "CaptainK-65/moon-car"
+
+import {
+  "ggbond44439/moonloom",
+  "moonbitlang/core/buffer",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn encode(Header, Array[Block], limits? : Limits) -> Bytes raise CarError
+
+// Errors
+pub(all) suberror CarError {
+  InvalidHeader(String)
+  InvalidCid(String)
+  InvalidVarint(Int)
+  LimitExceeded(String, UInt64, UInt64)
+  Truncated(Int)
+  InvalidState(String)
+  Integrity(Int, String)
+  MissingRoot(String)
+  NotFound
+} derive(@debug.Debug)
+pub fn CarError::to_repr(Self) -> @debug.Repr
+
+// Types and methods
+pub struct Archive {
+  bytes : Bytes
+  header : Header
+  entries : Array[Entry]
+  by_cid : Map[Bytes, Array[Entry]]
+  limits : Limits
+}
+pub fn Archive::block_at(Self, Int) -> Block raise CarError
+pub fn Archive::bytes(Self) -> Bytes
+pub fn Archive::decode(Bytes, limits? : Limits) -> Self raise CarError
+pub fn Archive::entries(Self) -> Array[Entry]
+pub fn Archive::get(Self, @moonloom.Cid) -> Block raise CarError
+pub fn Archive::get_all(Self, @moonloom.Cid) -> Array[Block] raise CarError
+pub fn Archive::header(Self) -> Header
+pub fn Archive::length(Self) -> Int
+pub fn Archive::locations(Self, @moonloom.Cid) -> Array[Location]
+pub fn Archive::require_roots(Self) -> Unit raise CarError
+pub fn Archive::verify(Self, provider? : @moonloom.HashProvider, require_roots? : Bool) -> Unit raise CarError
+
+pub struct Block {
+  cid : @moonloom.Cid
+  data : Bytes
+}
+pub fn Block::cid(Self) -> @moonloom.Cid
+pub fn Block::data(Self) -> Bytes
+pub fn Block::encode(Self, limits? : Limits) -> Bytes raise CarError
+pub fn Block::new(@moonloom.Cid, Bytes) -> Self
+pub fn Block::verify(Self, provider? : @moonloom.HashProvider, limits? : Limits) -> Unit raise CarError
+
+pub struct Decoder {
+  limits : Limits
+  prefix : @buffer.Buffer
+  body : @buffer.Buffer
+  mut stage : Stage
+  mut header_seen : Bool
+  mut position : Int
+  mut section_start : Int
+  mut body_start : Int
+  mut count : Int
+  mut closed : Bool
+  mut failed : Bool
+}
+pub fn Decoder::feed(Self, BytesView) -> Array[Event] raise CarError
+pub fn Decoder::finish(Self) -> Unit raise CarError
+pub fn Decoder::new(limits? : Limits) -> Self
+pub fn Decoder::position(Self) -> Int
+
+pub struct Entry {
+  cid : @moonloom.Cid
+  location : Location
+}
+pub fn Entry::cid(Self) -> @moonloom.Cid
+pub fn Entry::location(Self) -> Location
+
+pub(all) enum Event {
+  Header(Header)
+  Block(Block, Location)
+}
+
+pub struct Header {
+  roots : Array[@moonloom.Cid]
+}
+pub fn Header::encode(Self, limits? : Limits) -> Bytes raise CarError
+pub fn Header::new(Array[@moonloom.Cid]) -> Self
+pub fn Header::roots(Self) -> Array[@moonloom.Cid]
+
+pub struct Limits {
+  max_header : Int
+  max_block : Int
+  max_roots : Int
+  max_blocks : Int
+  max_archive : Int
+}
+pub fn Limits::default() -> Self
+pub fn Limits::new(max_header? : Int, max_block? : Int, max_roots? : Int, max_blocks? : Int, max_archive? : Int) -> Self raise CarError
+
+pub(all) struct Location {
+  section_offset : Int
+  data_offset : Int
+  data_length : Int
+  section_length : Int
+} derive(@debug.Debug)
+pub fn Location::to_repr(Self) -> @debug.Repr
+
+type Stage
+
+pub struct Writer {
+  limits : Limits
+  header : Header
+  mut position : Int
+  mut count : Int
+  mut started : Bool
+}
+pub fn Writer::new(Header, limits? : Limits) -> Self
+pub fn Writer::position(Self) -> Int
+pub fn Writer::start(Self) -> Bytes raise CarError
+pub fn Writer::write(Self, Block) -> (Bytes, Location) raise CarError
+
+// Type aliases
+
+// Traits

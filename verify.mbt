@@ -24,8 +24,11 @@ pub fn Archive::verify(
     let block = self.read_entry(entry)
     match block.cid.verify(block.data, provider, cid_limits(self.limits)) {
       Ok(_) => ()
-      Err(err) => raise Integrity(entry.location.section_offset, err.to_string())
+      Err(err) =>
+        raise Integrity(entry.location.section_offset, err.to_string())
     }
   }
-  if require_roots { self.require_roots() }
+  if require_roots {
+    self.require_roots()
+  }
 }

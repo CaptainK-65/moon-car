@@ -1,0 +1,11 @@
+MoonCAR
+Copyright 2026 MoonCAR contributors
+
+The independent IPLD reference fixture is Apache-2.0 OR MIT; this distribution
+selects Apache-2.0. Original notice: fixtures/IPLD-LICENSE.
+
+Separate runtime dependencies (not vendored source):
+ggbond44439/moonloom 0.1.6 (Apache-2.0)
+2515050242/cbor 0.1.2 (Apache-2.0)
+moonbitlang/async 0.22.4 (Apache-2.0; native CLI)
+Transitive hashing/base dependencies retain their package licenses.

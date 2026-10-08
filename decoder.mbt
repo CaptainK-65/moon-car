@@ -25,24 +25,40 @@ pub struct Decoder {
 ///|
 pub fn Decoder::new(limits? : Limits = Limits::default()) -> Decoder {
   {
-    limits, prefix: @buffer.Buffer(), body: @buffer.Buffer(), stage: Prefix,
-    header_seen: false, position: 0, section_start: 0, body_start: 0,
-    count: 0, closed: false, failed: false,
+    limits,
+    prefix: @buffer.Buffer(),
+    body: @buffer.Buffer(),
+    stage: Prefix,
+    header_seen: false,
+    position: 0,
+    section_start: 0,
+    body_start: 0,
+    count: 0,
+    closed: false,
+    failed: false,
   }
 }
 
 ///|
 fn Decoder::accept(self : Decoder, byte : Byte) -> Event? raise CarError {
   if self.position >= self.limits.max_archive {
-    raise LimitExceeded("archive", self.limits.max_archive.to_uint64(), self.position.to_uint64() + 1UL)
+    raise LimitExceeded(
+      "archive",
+      self.limits.max_archive.to_uint64(),
+      self.position.to_uint64() + 1UL,
+    )
   }
   self.position += 1
   match self.stage {
     Prefix => {
       self.prefix.write_byte(byte)
-      if self.prefix.length() > 10 { raise InvalidVarint(self.section_start) }
+      if self.prefix.length() > 10 {
+        raise InvalidVarint(self.section_start)
+      }
       if (byte.to_int() & 128) != 0 {
-        if self.prefix.length() == 10 { raise InvalidVarint(self.section_start) }
+        if self.prefix.length() == 10 {
+          raise InvalidVarint(self.section_start)
+        }
         return None
       }
       let (length, _) = match @cid.decode_u64(self.prefix.to_bytes()) {
@@ -50,17 +66,32 @@ fn Decoder::accept(self : Decoder, byte : Byte) -> Event? raise CarError {
         Err(_) => raise InvalidVarint(self.section_start)
       }
       if length == 0UL {
-        if self.header_seen { raise InvalidCid("zero-length block section") }
-        else { raise InvalidHeader("zero-length header") }
+        if self.header_seen {
+          raise InvalidCid("zero-length block section")
+        } else {
+          raise InvalidHeader("zero-length header")
+        }
       }
       if self.header_seen && self.count >= self.limits.max_blocks {
-        raise LimitExceeded("blocks", self.limits.max_blocks.to_uint64(), self.count.to_uint64() + 1UL)
+        raise LimitExceeded(
+          "blocks",
+          self.limits.max_blocks.to_uint64(),
+          self.count.to_uint64() + 1UL,
+        )
       }
       let name = if self.header_seen { "block" } else { "header" }
-      let maximum = if self.header_seen { self.limits.max_block } else { self.limits.max_header }
+      let maximum = if self.header_seen {
+        self.limits.max_block
+      } else {
+        self.limits.max_header
+      }
       let length = bounded_length(length, maximum, name)
       if length > self.limits.max_archive - self.position {
-        raise LimitExceeded("archive", self.limits.max_archive.to_uint64(), self.position.to_uint64() + length.to_uint64())
+        raise LimitExceeded(
+          "archive",
+          self.limits.max_archive.to_uint64(),
+          self.position.to_uint64() + length.to_uint64(),
+        )
       }
       self.stage = Body(length)
       self.body_start = self.position
@@ -68,7 +99,9 @@ fn Decoder::accept(self : Decoder, byte : Byte) -> Event? raise CarError {
     }
     Body(length) => {
       self.body.write_byte(byte)
-      if self.body.length() < length { return None }
+      if self.body.length() < length {
+        return None
+      }
       let bytes = self.body.to_bytes()
       let event = if !self.header_seen {
         let header = decode_header(bytes, self.limits)
@@ -94,19 +127,30 @@ fn Decoder::accept(self : Decoder, byte : Byte) -> Event? raise CarError {
 }
 
 ///|
-pub fn Decoder::feed(self : Decoder, chunk : BytesView) -> Array[Event] raise CarError {
-  if self.closed || self.failed { raise InvalidState("decoder is closed or failed") }
-  errdefer { self.failed = true }
+pub fn Decoder::feed(
+  self : Decoder,
+  chunk : BytesView,
+) -> Array[Event] raise CarError {
+  if self.closed || self.failed {
+    raise InvalidState("decoder is closed or failed")
+  }
+  errdefer {
+    self.failed = true
+  }
   let events = []
   for byte in chunk {
-    if self.accept(byte) is Some(event) { events.push(event) }
+    if self.accept(byte) is Some(event) {
+      events.push(event)
+    }
   }
   events
 }
 
 ///|
 pub fn Decoder::finish(self : Decoder) -> Unit raise CarError {
-  if self.closed || self.failed { raise InvalidState("decoder is closed or failed") }
+  if self.closed || self.failed {
+    raise InvalidState("decoder is closed or failed")
+  }
   self.closed = true
   if !self.header_seen || self.prefix.length() != 0 || self.body.length() != 0 {
     raise Truncated(self.position)
@@ -114,4 +158,6 @@ pub fn Decoder::finish(self : Decoder) -> Unit raise CarError {
 }
 
 ///|
-pub fn Decoder::position(self : Decoder) -> Int { self.position }
+pub fn Decoder::position(self : Decoder) -> Int {
+  self.position
+}

@@ -15,7 +15,9 @@ fn decode_block(bytes : Bytes, limits : Limits) -> (Block, Int) raise CarError {
         Ok(n) => n
         Err(err) => raise InvalidCid(err.to_string())
       }
-      if length != 32UL { raise InvalidCid("CIDv0 digest must have 32 bytes") }
+      if length != 32UL {
+        raise InvalidCid("CIDv0 digest must have 32 bytes")
+      }
       match reader.read_fixed("CIDv0 digest", 32) {
         Ok(_) => ()
         Err(err) => raise InvalidCid(err.to_string())
@@ -47,12 +49,18 @@ fn decode_block(bytes : Bytes, limits : Limits) -> (Block, Int) raise CarError {
 
 ///|
 /// Encode a single CAR block section; this does not assert hash validity.
-pub fn Block::encode(self : Block, limits? : Limits = Limits::default()) -> Bytes raise CarError {
+pub fn Block::encode(
+  self : Block,
+  limits? : Limits = Limits::default(),
+) -> Bytes raise CarError {
   let cid = self.cid.to_bytes()
   ignore(checked_cid(cid, limits))
   if self.data.length() > limits.max_block - cid.length() {
-    raise LimitExceeded("block", limits.max_block.to_uint64(),
-      cid.length().to_uint64() + self.data.length().to_uint64())
+    raise LimitExceeded(
+      "block",
+      limits.max_block.to_uint64(),
+      cid.length().to_uint64() + self.data.length().to_uint64(),
+    )
   }
   let n = cid.length() + self.data.length()
   @cid.encode_u64(n.to_uint64()) + cid + self.data

@@ -32,17 +32,27 @@ pub fn Limits::new(
   max_blocks? : Int = 1000000,
   max_archive? : Int = 256 * 1024 * 1024,
 ) -> Limits raise CarError {
-  if max_header <= 0 || max_block <= 0 || max_roots < 0 ||
-    max_blocks < 0 || max_archive <= 0 {
-    raise InvalidState("limits must be positive; root and block counts may be zero")
+  if max_header <= 0 ||
+    max_block <= 0 ||
+    max_roots < 0 ||
+    max_blocks < 0 ||
+    max_archive <= 0 {
+    raise InvalidState(
+      "limits must be positive; root and block counts may be zero",
+    )
   }
-  { max_header, max_block, max_roots, max_blocks, max_archive }
+  { max_header, max_block, max_roots, max_blocks, max_archive, }
 }
 
 ///|
 pub fn Limits::default() -> Limits {
-  { max_header: 1024 * 1024, max_block: 16 * 1024 * 1024,
-    max_roots: 1024, max_blocks: 1000000, max_archive: 256 * 1024 * 1024 }
+  {
+    max_header: 1024 * 1024,
+    max_block: 16 * 1024 * 1024,
+    max_roots: 1024,
+    max_blocks: 1000000,
+    max_archive: 256 * 1024 * 1024,
+  }
 }
 
 ///|
@@ -52,7 +62,7 @@ pub struct Header {
 
 ///|
 pub fn Header::new(roots : Array[@cid.Cid]) -> Header {
-  { roots: roots.copy() }
+  { roots: roots.copy(), }
 }
 
 ///|
@@ -68,14 +78,18 @@ pub struct Block {
 
 ///|
 pub fn Block::new(cid : @cid.Cid, data : Bytes) -> Block {
-  { cid, data }
+  { cid, data, }
 }
 
 ///|
-pub fn Block::cid(self : Block) -> @cid.Cid { self.cid }
+pub fn Block::cid(self : Block) -> @cid.Cid {
+  self.cid
+}
 
 ///|
-pub fn Block::data(self : Block) -> Bytes { self.data }
+pub fn Block::data(self : Block) -> Bytes {
+  self.data
+}
 
 ///|
 /// Absolute offsets into the CARv1 bytes, including the header and framing.
@@ -97,7 +111,10 @@ pub(all) enum Event {
 
 ///|
 fn cid_limits(limits : Limits) -> @cid.Limits {
-  @cid.Limits::new(max_input_bytes=limits.max_block.max(2048), max_digest_bytes=1024)
+  @cid.Limits::new(
+    max_input_bytes=limits.max_block.max(2048),
+    max_digest_bytes=1024,
+  )
 }
 
 ///|

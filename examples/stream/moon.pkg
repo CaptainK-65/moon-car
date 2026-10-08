@@ -2,4 +2,5 @@ import {
   "CaptainK-65/moon-car" @car,
   "ggbond44439/moonloom" @cid,
 }
+
 pkgtype(kind: "executable")
