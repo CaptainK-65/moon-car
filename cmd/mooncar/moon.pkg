@@ -1,0 +1,11 @@
+import {
+  "CaptainK-65/moon-car" @car,
+  "ggbond44439/moonloom" @cid,
+  "moonbitlang/async",
+  "moonbitlang/async/fs",
+  "moonbitlang/core/env",
+  "moonbitlang/async/io",
+  "moonbitlang/core/buffer",
+}
+pkgtype(kind: "executable")
+supported_targets = "+native"

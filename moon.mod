@@ -9,4 +9,5 @@ preferred_target = "wasm"
 import {
   "ggbond44439/moonloom@0.1.6",
   "2515050242/cbor@0.1.2",
+  "moonbitlang/async@0.22.4",
 }
